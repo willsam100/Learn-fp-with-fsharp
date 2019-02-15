@@ -1,4 +1,4 @@
-module Tests
+module Program
 
 open System
 open Xunit
@@ -62,11 +62,11 @@ module Functions =
             RunLesson = fun () -> Functions.identity 10 |> should equal 10
         }
 
-    let ``addone should add one`` =
+    let ``addTwo should add one`` =
         {   
             ErrorMessage = "The function should return the value with 1 adding to it. You can use + to help"
-            CompletedMessage =  sprintf "%s learnt" <| nameof <@ Functions.addOne @>
-            RunLesson = fun () -> Functions.addOne 10 |> should equal 11
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ Functions.addTwo @>
+            RunLesson = fun () -> Functions.addTwo 10 |> should equal 12
         }
 
     let ``doubleIdentity should return the input unchanged`` =
@@ -107,3 +107,49 @@ module HigherOrderFunctions =
             CompletedMessage =  sprintf "%s learnt" <| nameof <@ HigherOrderFunctions.addTwenty @>
             RunLesson = fun () -> HigherOrderFunctions.addTwenty 42 |> should equal (42 + 20)
         }
+
+
+let [<EntryPoint>] main _ = 
+    printfn "Assesing your progress...\n"
+
+    let lessons = 
+        [
+            ReadingFunctions.``Addone should add one``
+            ReadingFunctions.``SubtractOne should subract one``
+            Functions.``identity should return the same input``
+            Functions.``addone should add one``
+            PureFunctions.``raiseToThePower to show return the pow of y applied to x``
+        ] 
+
+    let results = 
+        lessons 
+        |> List.map (fun x -> teach x.ErrorMessage x.CompletedMessage x.RunLesson)
+
+    results 
+    |> List.choose (function | Learnt m -> Some m | _ -> None)
+    |> function
+    | [] -> ()
+    | xs ->
+        printfn "well done on these:"
+        xs |> List.iter (printfn "%s")
+        printfn ""
+
+    results 
+    |> List.choose (function | StillLearning m -> Some m | _ -> None)
+        |> function
+    | [] -> ()
+    | xs ->
+        printfn "Keep trying on here:"
+        xs |> List.iter (printfn "%s")
+        printfn ""
+
+    results 
+    |> List.choose (function | InComplete m -> Some m | _ -> None)
+        |> function
+    | [] -> ()
+    | xs ->
+        printfn "There is always more to learn. Enjoy the journey"
+        printfn "Start here:"
+        xs |> List.truncate 1 |> List.iter (printfn "%s")
+        printfn ""
+    0

@@ -1,9 +1,7 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LearnFP.Core", "LearnFP.Core\LearnFP.Core.fsproj", "{3EF0CFE7-9524-4C54-9FFB-38F3E189CA90}"
-EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LearnFP.Test", "LearnFP.Test\LearnFP.Test.fsproj", "{754EAECD-5509-4495-994A-791627E09EDF}"
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LearnFP", "LearnFP.fsproj", "{754EAECD-5509-4495-994A-791627E09EDF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +9,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3EF0CFE7-9524-4C54-9FFB-38F3E189CA90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3EF0CFE7-9524-4C54-9FFB-38F3E189CA90}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3EF0CFE7-9524-4C54-9FFB-38F3E189CA90}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3EF0CFE7-9524-4C54-9FFB-38F3E189CA90}.Release|Any CPU.Build.0 = Release|Any CPU
 		{754EAECD-5509-4495-994A-791627E09EDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{754EAECD-5509-4495-994A-791627E09EDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{754EAECD-5509-4495-994A-791627E09EDF}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -42,13 +42,13 @@ module Functions =
     let id: 'a -> 'a = identity
 
     // Complete the following
-    let addOne x = 
-        RemoveAndComplete("addOne")
+    let addTwo x = 
+        RemoveAndComplete("addTwo")
 
     // Complete the following using the id function
     // Implement the identity function using the id function created above
     let doubleIdentity x = 
-        id (RemoveAndComplete("addOne"))
+        id (RemoveAndComplete("doubleIdentity"))
 
 
 module PureFunctions = 
@@ -97,7 +97,7 @@ module HigherOrderFunctions =
     // Complete the following 
     // the function should return 100
     let addOneHundred () =     
-        f id (RemoveAndComplete("addOneHundres"))
+        f id (RemoveAndComplete("addOneHundred"))
 
     // functions do not always need a name. 
     // They are called annoymous functions or a lamda 
