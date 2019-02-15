@@ -4,14 +4,21 @@ open System
 open Xunit
 open LearnFP.Core
 open FsUnit
+open Utils
+
+open Microsoft.FSharp.Quotations
+
+let nameof (q:Expr<_>) = 
+  match q with 
+  | Patterns.Let(_, _, DerivedPatterns.Lambdas(_, Patterns.Call(_, mi, _))) -> mi.Name
+  | Patterns.PropertyGet(_, mi, _) -> mi.Name
+  | DerivedPatterns.Lambdas(_, Patterns.Call(_, mi, _)) -> mi.Name
+  | _ -> failwith "Unexpected format"
 
 type LessonsResult = 
     | InComplete of string
     | StillLearning of string
     | Learnt of string
-    
-
-    
 
 
 let teach message learntMessage f = 
@@ -22,133 +29,81 @@ let teach message learntMessage f =
     | NotCompleted name -> InComplete name
     | _ -> message |> StillLearning
 
+type Lesson = {
+    ErrorMessage:string
+    CompletedMessage:string
+    RunLesson: unit -> unit
+}
+
 module ReadingFunctions = 
 
-    let ``Addone should add one`` () =
-        
+    let ``Addone should add one`` =
         let readingFunctions = ReadingFunctions()
-        teach "The function should return the value with 1 adding to it. You can use + to help" "ReadingFunctions.AddOne learnt" <| 
-            fun () -> readingFunctions.AddOne(10) |> should equal 11
+        {   
+            ErrorMessage = "The function should return the value with 1 adding to it. You can use + to help"
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ readingFunctions.AddOne @>
+            RunLesson = fun () -> readingFunctions.AddOne(10) |> should equal 11
+        }
 
+    let ``SubtractOne should subract one`` =
+        let readingFunctions = ReadingFunctions()
+        {   
+            ErrorMessage = "The function should return the value with 1 subtracted from it. You can use - to help"
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ readingFunctions.SubtractOne @>
+            RunLesson = fun () -> readingFunctions.SubtractOne(10) |> should equal 9 
+        }
 
-//namespace LearnFP.Core
+module Functions = 
 
-//[<AutoOpen>]
-//module Utils =
-//    let inline RemoveAndComplete name = failwithf "%s: Remove __() and fill in with the correct value" name
+    let ``identity should return the same input`` =
+        {   
+            ErrorMessage = "The function should return the input unchaged."
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ Functions.identity @>
+            RunLesson = fun () -> Functions.identity 10 |> should equal 10
+        }
 
-//type ReadingFunctions() = 
+    let ``addone should add one`` =
+        {   
+            ErrorMessage = "The function should return the value with 1 adding to it. You can use + to help"
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ Functions.addOne @>
+            RunLesson = fun () -> Functions.addOne 10 |> should equal 11
+        }
 
-//    // THe following is a function that is attached to a class. 
-//    // It takes in an integer and returns the integer
-//    // the return keyword is
-//    member this.Method(x:int):int = 
-//        x
+    let ``doubleIdentity should return the input unchanged`` =
+        {
+            ErrorMessage = "The function should return the input unchaged."
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ Functions.doubleIdentity @>
+            RunLesson = fun () -> Functions.doubleIdentity 10 |> should equal 10
+        }
 
-//    // Complete the following
-//    // NB: you do not need the return keyword. see the example above
-//    // return x with 1 added to it. 
-//    member this.Addone (x:int): int = 
-//        RemoveAndComplete("AddOne")
+module PureFunctions = 
 
-//    // Types and parenthes are options
-//    // For the tests to compile and pass, this should take in an int, and return and int
-//    member this.SubtractOne x = 
-//        RemoveAndComplete("SubtractOne")
+    let ``raiseToThePower to show return the pow of y applied to x`` = 
+        {
+            ErrorMessage = "The function should return x raised to the power of why. eg. 2.0 ** 2.0 = 4.08.8"
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ PureFunctions.raiseToThePower @>
+            RunLesson = fun () -> PureFunctions.raiseToThePower 8. 2. |> should equal 64
+        }  
 
-//// Static class 
-//module Functions = 
+    let ``isFooAPureFunction is true`` = 
+        {   
+            ErrorMessage = "isFooAPureFunction is not correct. Please reconsider your answer. \n\tTime is always moving forward. Meothds that don't take in any args are typically not pure functions."
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ PureFunctions.isFooAPureFunction @>
+            RunLesson = fun () -> PureFunctions.isFooAPureFunction () |> should equal true
+        }  
 
-//    // A method not attached to a module is a function
-//    // the identity function returns the input. 
-//    let identity x = 
-//        RemoveAndComplete("identity")
+module HigherOrderFunctions = 
 
-//    // Values can be named with let as well
-//    let x: bool = true
+    let ``addOneHundred is true`` = 
+        {   
+            ErrorMessage = "f is a function the takes a function and runs it with the input. the indentity function returns the input."
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ HigherOrderFunctions.addOneHundred @>
+            RunLesson = fun () -> HigherOrderFunctions.addOneHundred () |> should equal 100
+        }  
 
-//    // types do not need to be declared. This will still be type checked 
-//    let y = true
-
-//    // Functions can be declared as data too.
-//    let id: 'a -> 'b = identity
-
-//    // Complete the following
-//    let addOne x = 
-//        RemoveAndComplete("addOne")
-
-//    // Complete the following using the id function
-//    let identifyAgain x = 
-//        RemoveAndComplete("addOne")id x
-
-//module PureFunctions = 
-//    open System
-
-//    // A pure function is a function that will always return the same result, given the same inputs
-//    let pureFunction x y =      
-//        x + y
-
-//    // This is NOT a pure function, the result changes when given the same input
-//    let impure x = 
-//        let r = Random()
-//        r.Next()
-
-//    // Complete the following
-//    // ie +
-//    let add x y = 
-//        RemoveAndComplete("add")id x
-
-//    // Complete the following
-//    // Will divide always return the same output for the same inputs. 
-//    // The output must always be of the same type for any inputs. eg + always returns a number
-//    let isDivideAPureFunction: bool = 
-//        RemoveAndComplete("isDivideAPureFunction")
-
-//module HigherOrderFunctions = 
-
-//    // A higher order function, is a function that takes in another function
-//    let f (g: int -> int) (x:int): int = 
-//        g x
-
-//    let id x = x
-
-//    // to use the function f, we supply two values with spaces in between
-//    // in OOP langugaes we would have written f(id,10)
-//    let callingWithTwoArguments = 
-//        f id 10
-
-//    // Complete the following 
-//    // the function should return 100
-//    let addOneHundres =     
-//        f id (RemoveAndComplete("addOneHundres"))
-
-//    // functions do not alwasy need a name. 
-//    // They are called annoymous functions or a lamda 
-//    // the keyword 'fun' is used to create an annoymous function
-//    let lamdafunction = (fun x -> x + 1)
-
-//    // We can pass a lamda in to a higher order function 
-//    let addTen x = 
-//        f (fun x -> x + 10) x
-
-//    // Complete the following 
-//    let addTwenty x = 
-//        f (RemoveAndComplete("addTwenty")) x
-
-//module ParitalApplication = 
-
-    //// a function that takes in two items
-    //let add x y = 
-    //    x + y
-
-    //// If a argument is missing, then the result is a function
-    //// addOne is a function that takes an int and returns the result of int + 1
-    //let addOne: int -> int = add 1
-
-    //// Complete the following using add
-    //let addTwo: int -> int = 
-        //RemoveAndComplete("addTwenty")    
-        
-        
-
-    
+    let ``addTwenty is true`` = 
+        {   
+            ErrorMessage = "The following function adds 10. This function should add 20 (fun x -> x + 10) x"
+            CompletedMessage =  sprintf "%s learnt" <| nameof <@ HigherOrderFunctions.addTwenty @>
+            RunLesson = fun () -> HigherOrderFunctions.addTwenty 42 |> should equal (42 + 20)
+        }

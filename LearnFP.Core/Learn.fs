@@ -1,22 +1,19 @@
 namespace LearnFP.Core
-
-[<AutoOpen>]
-module Utils =
-    exception NotCompleted of string
-    let inline RemoveAndComplete name = 
-        sprintf "%s: Remove `RemoveAndComplete(%s)` and fill in with the correct value" name name |> NotCompleted |> raise
+open Utils
 
 type ReadingFunctions() = 
 
     // THe following is a function that is attached to a class. 
-    // It takes in an integer and returns the integer
-    // the return keyword is
+    // The name of the class is above - ReadingFunctions
+    // This method below takes in an integer, named x, and returns the integer
+    // In FP languages, the return type type typically comes last
+    // the return keyword is also not needed
     member this.Method(x:int):int = 
         x
 
     // Complete the following
     // NB: you do not need the return keyword. see the example above
-    // return x with 1 added to it. 
+    // return x with 1 added to it, as you would in statndard maths. 
     member this.AddOne (x:int): int = 
         RemoveAndComplete("AddOne")
 
@@ -30,8 +27,9 @@ type ReadingFunctions() =
 module Functions = 
 
     // A method not attached to a module is a function
-    // the identity function returns the input. 
-    let identity x = 
+    // the identity function simply returns the input, unchanged
+    // complete the following, by returning the input
+    let inline identity x = 
         RemoveAndComplete("identity")
 
     // Values can be named with let as well
@@ -41,15 +39,16 @@ module Functions =
     let y = true
 
     // Functions can be declared as data too.
-    let id: 'a -> 'b = identity
+    let id: 'a -> 'a = identity
 
     // Complete the following
     let addOne x = 
         RemoveAndComplete("addOne")
 
     // Complete the following using the id function
-    let identifyAgain x = 
-        RemoveAndComplete("addOne")id x
+    // Implement the identity function using the id function created above
+    let doubleIdentity x = 
+        id (RemoveAndComplete("addOne"))
 
 
 module PureFunctions = 
@@ -64,17 +63,19 @@ module PureFunctions =
         let r = Random()
         r.Next()
 
+    // Complete the following
+    // you can use Math.Pow or infix **
+    let raiseToThePower (x:float) y = 
+        RemoveAndComplete("add") y
+
+
+    let foo () = 
+        DateTime.Now
 
     // Complete the following
-    // ie +
-    let add x y = 
-        RemoveAndComplete("add")id x
-
-    // Complete the following
-    // Will divide always return the same output for the same inputs. 
-    // The output must always be of the same type for any inputs. eg + always returns a number
-    let isDivideAPureFunction: bool = 
-        RemoveAndComplete("isDivideAPureFunction")
+    // is the funciton abve named `foo` a pure function? 
+    let isFooAPureFunction (): bool = 
+        RemoveAndComplete("isFooAPureFunction")
 
         
 module HigherOrderFunctions = 
@@ -83,6 +84,9 @@ module HigherOrderFunctions =
     let f (g: int -> int) (x:int): int = 
         g x
 
+    // We'll use this next with our function above
+    // F# also defines this function for us, so this code can be commented out. 
+    // In the future, this function will not be declared. 
     let id x = x
 
     // to use the function f, we supply two values with spaces in between
@@ -92,13 +96,13 @@ module HigherOrderFunctions =
 
     // Complete the following 
     // the function should return 100
-    let addOneHundres =     
+    let addOneHundred () =     
         f id (RemoveAndComplete("addOneHundres"))
 
-    // functions do not alwasy need a name. 
+    // functions do not always need a name. 
     // They are called annoymous functions or a lamda 
     // the keyword 'fun' is used to create an annoymous function
-    let lamdafunction = (fun x -> x + 1)
+    let lamdafunction: int -> int = (fun x -> x + 1)
 
     // We can pass a lamda in to a higher order function 
     let addTen x = 
@@ -114,7 +118,6 @@ module ParitalApplication =
     // a function that takes in two items
     let add x y = 
         x + y
-
 
     // If a argument is missing, then the result is a function
     let addOne: int -> int = add 1
