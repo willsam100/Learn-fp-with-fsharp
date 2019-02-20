@@ -62,7 +62,7 @@ module Functions =
             RunLesson = fun () -> Functions.identity 10 |> should equal 10
         }
 
-    let ``addTwo should add one`` =
+    let ``addTwo should add two`` =
         {   
             ErrorMessage = "The function should return the value with 1 adding to it. You can use + to help"
             CompletedMessage =  sprintf "%s learnt" <| nameof <@ Functions.addTwo @>
@@ -117,7 +117,7 @@ let [<EntryPoint>] main _ =
             ReadingFunctions.``Addone should add one``
             ReadingFunctions.``SubtractOne should subract one``
             Functions.``identity should return the same input``
-            Functions.``addone should add one``
+            Functions.``addTwo should add two``
             PureFunctions.``raiseToThePower to show return the pow of y applied to x``
         ] 
 
