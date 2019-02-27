@@ -85,11 +85,11 @@ module PureFunctions =
             RunLesson = fun () -> PureFunctions.raiseToThePower 8. 2. |> should equal 64
         }  
 
-    let ``isFooAPureFunction is true`` = 
+    let ``isFooAPureFunction is false`` = 
         {   
             ErrorMessage = "isFooAPureFunction is not correct. Please reconsider your answer. \n\tTime is always moving forward. Meothds that don't take in any args are typically not pure functions."
             CompletedMessage =  sprintf "%s learnt" <| nameof <@ PureFunctions.isFooAPureFunction @>
-            RunLesson = fun () -> PureFunctions.isFooAPureFunction () |> should equal true
+            RunLesson = fun () -> PureFunctions.isFooAPureFunction () |> should equal false
         }  
 
 module HigherOrderFunctions = 
@@ -118,7 +118,11 @@ let [<EntryPoint>] main _ =
             ReadingFunctions.``SubtractOne should subract one``
             Functions.``identity should return the same input``
             Functions.``addTwo should add two``
+            Functions.``doubleIdentity should return the input unchanged``
             PureFunctions.``raiseToThePower to show return the pow of y applied to x``
+            PureFunctions.``isFooAPureFunction is false``
+            HigherOrderFunctions.``addOneHundred is true``
+            HigherOrderFunctions.``addTwenty is true``
         ] 
 
     let results = 
