@@ -94,12 +94,12 @@ module ReadingFunctions =
             Order = (3,1)
         }  
 
-    let ``isFooAPureFunction is true`` = 
+    let ``isFooAPureFunction is false`` = 
         {   
             ErrorMessage = "isFooAPureFunction is not correct. Please reconsider your answer. \n\tTime is always moving forward. Meothds that don't take in any args are typically not pure functions."
             CompletedMessage =  sprintf "%s learnt" <| nameof  PureFunctions.isFooAPureFunction
-            RunLesson = fun () -> PureFunctions.isFooAPureFunction () |> should equal true
             Order = (3,2)
+            RunLesson = fun () -> PureFunctions.isFooAPureFunction () |> should equal false
         }  
 
     let ``addOneHundred is true`` = 
