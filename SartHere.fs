@@ -225,7 +225,7 @@ module CombinngConcepts =
     // NB: F# uses a single `=` for equality
     // Generate a list from 1 to 200, then create a copy with the only the even numbers. 
     let evenNumbers = 
-        List.filter (fun x -> x % 0 = 0 ) [ 1 .. 200]
+        List.filter (fun x -> (x % 2) = 0 ) [ 1 .. 200]
 
     // create a list of odd numbers between 10 to 20
     let oddNumbers (): list<int> = 
@@ -315,7 +315,7 @@ module BuildingUsefulTypes =
     let toUpper (maybeString: MaybeString): MaybeString = 
         RemoveAndComplete("toString")
 
-// do we want to always be pattern matching
+// do we want to always be pattern matching?
 module SeeingPatterns =         
     // Declare the type in this module
     type MaybeString = 
@@ -336,5 +336,5 @@ module SeeingPatterns =
     let lower a: MaybeString = 
         map (fun (x: string) -> RemoveAndComplete("toLower()") ) a
 
-    let lowered = lower (Just "FOOO")
-    let safeOp = lower NoString
+    let lowered () = lower (Just "FOOO")
+    let safeOp () = lower NoString
